@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Upload</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <label for="name">Nome:</label>
+        <input type="text" id="name" placeholder="Inserisci il tuo nome">
+        <label for="carNumber">Numero Auto:</label>
+        <input type="text" id="carNumber" placeholder="Inserisci il numero dell'auto">
+        <div id="error" style="display: none;">Inserisci il numero dell'auto</div>
+
+        <button id="registerBtn" class="button">Registra</button>
+        <button id="loadBtn" class="button">Sfoglia</button>
+        <input type="file" id="fileInput" style="display: none;">
+
+        <div id="spinner" style="display: none;">
+            <i class="fas fa-spinner fa-spin"></i>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

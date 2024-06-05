@@ -1,0 +1,31 @@
+# Dipendenze di Node.js
+node_modules/
+package-lock.json
+
+# File di log
+#npm-debug.log*
+#yarn-debug.log*
+#yarn-error.log*
+
+# Directory di output
+#dist/
+#build/
+
+# Caricamenti locali
+#uploads/
+#uploads_libreria/
+
+# Configurazioni dell'IDE
+.vscode/
+
+# File temporanei del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Altri file temporanei
+#*.log
+#*.tmp
+#*.bak
+
+# Escludi file di configurazione specifici
+#.env
