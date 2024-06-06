@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #000; /* Sfondo nero */
     margin: 0;
-    padding: 0 0 80px 0; /* Aggiunge padding inferiore */
+    padding: 0;
     height: 100vh;
     overflow: hidden;
     position: relative;
@@ -104,13 +104,12 @@ video {
 
 #controls {
     position: absolute;
-    bottom: 0; /* Posiziona i controlli direttamente in fondo */
+    bottom: 40px; /* Aumenta il margine inferiore */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     justify-content: center;
     width: 100%;
-    padding-bottom: 40px; /* Aggiunge padding inferiore */
 }
 
 .button-round {
@@ -153,7 +152,7 @@ video {
 /* Layout per dispositivi mobili */
 @media (max-width: 768px) {
     body {
-        padding: 0 0 80px 0; /* Aggiunge padding inferiore per dispositivi mobili */
+        padding: 80px;
     }
 
     .button-round {
