@@ -152,7 +152,7 @@ video {
 /* Layout per dispositivi mobili */
 @media (max-width: 768px) {
     body {
-        padding: 80px;
+        padding: 20px;
     }
 
     .button-round {
