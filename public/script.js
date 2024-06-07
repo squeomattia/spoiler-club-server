@@ -69,7 +69,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 video.srcObject = stream;
                 video.play();
 
-                mediaRecorder = new MediaRecorder(stream);
+                // Specifica il codec durante la creazione di MediaRecorder
+                mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp8' });
 
                 mediaRecorder.ondataavailable = function(event) {
                     console.log('Dati disponibili:', event.data.size);
