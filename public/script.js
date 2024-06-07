@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     if (window.location.pathname.endsWith('record.html')) {
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(function(stream) {
+                console.log('Accesso alla fotocamera concesso');
                 let video = document.getElementById('video');
                 video.srcObject = stream;
                 video.play();
@@ -71,21 +72,44 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 mediaRecorder = new MediaRecorder(stream);
 
                 mediaRecorder.ondataavailable = function(event) {
+                    console.log('Dati disponibili:', event.data.size);
                     if (event.data.size > 0) {
                         recordedChunks.push(event.data);
                     }
                 };
 
                 mediaRecorder.onstop = function() {
+                    console.log('MediaRecorder stoppato:', recordedChunks);
                     let blob = new Blob(recordedChunks, {
                         type: 'video/webm'
                     });
                     let url = URL.createObjectURL(blob);
-                    let video = document.getElementById('video');
                     video.srcObject = null;
                     video.src = url;
                     video.controls = true;
+                    video.play();
                 };
+
+                mediaRecorder.onerror = function(event) {
+                    console.error('MediaRecorder errore:', event.error);
+                };
+
+                mediaRecorder.onstart = function() {
+                    console.log('MediaRecorder iniziato');
+                };
+
+                mediaRecorder.onpause = function() {
+                    console.log('MediaRecorder in pausa');
+                };
+
+                mediaRecorder.onresume = function() {
+                    console.log('MediaRecorder ripreso');
+                };
+
+                mediaRecorder.onwarning = function(event) {
+                    console.warn('MediaRecorder avviso:', event.warning);
+                };
+
             })
             .catch(function(err) {
                 console.error("Errore nell'accesso alla fotocamera: ", err);
@@ -96,12 +120,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
             mediaRecorder.start();
             document.getElementById('startBtn').style.display = 'none';
             document.getElementById('stopBtn').style.display = 'inline';
+            console.log('Registrazione iniziata');
         });
 
         document.getElementById('stopBtn').addEventListener('click', function() {
             mediaRecorder.stop();
             document.getElementById('stopBtn').style.display = 'none';
             document.getElementById('uploadBtn').style.display = 'inline';
+            console.log('Registrazione fermata');
         });
 
         document.getElementById('uploadBtn').addEventListener('click', function() {
