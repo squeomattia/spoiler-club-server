@@ -7,7 +7,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware per il parsing del body delle richieste POST in formato JSON
-app.use(express.json());
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ limit: '100mb', extended: true }));
 
 // Servi i file statici dalla cartella public
 app.use(express.static(path.join(__dirname, 'public')));
@@ -110,7 +111,7 @@ app.post('/upload', upload.single('video'), (req, res) => {
     const newFileName = `${carNumber}_${name}_${userVideos[name]}.mp4`;
     const newPath = path.join(uploadsDir, newFileName);
 
-    const ffmpegCommand = `ffmpeg -i ${tempPath} -c:v libx264 -preset slow -crf 22 -c:a aac -b:a 128k ${newPath}`;
+    const ffmpegCommand = `ffmpeg -fflags +genpts -i ${tempPath} -c:v libx264 -preset slow -crf 22 -c:a aac -b:a 128k ${newPath}`;
     console.log(`Esecuzione comando FFmpeg: ${ffmpegCommand}`);
     
     exec(ffmpegCommand, (err, stdout, stderr) => {
