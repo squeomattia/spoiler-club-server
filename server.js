@@ -7,15 +7,15 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware per il parsing del body delle richieste POST in formato JSON
-app.use(express.json({ limit: '100mb' }));
-app.use(express.urlencoded({ limit: '100mb', extended: true }));
+app.use(express.json({ limit: '500mb' }));
+app.use(express.urlencoded({ limit: '500mb', extended: true }));
 
 // Servi i file statici dalla cartella public
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Servi i file statici dalla cartella uploads
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/uploads_libreria', express.static(path.join(__dirname, 'uploads_libreria')));
+//app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+//app.use('/uploads_libreria', express.static(path.join(__dirname, 'uploads_libreria')));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
