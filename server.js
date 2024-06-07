@@ -13,10 +13,6 @@ app.use(express.urlencoded({ limit: '500mb', extended: true }));
 // Servi i file statici dalla cartella public
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Servi i file statici dalla cartella uploads
-//app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-//app.use('/uploads_libreria', express.static(path.join(__dirname, 'uploads_libreria')));
-
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
