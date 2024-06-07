@@ -13,7 +13,6 @@ async function uploadPendingVideos() {
     request.onsuccess = async function(event) {
         const allUploads = event.target.result;
 
-        // Verifica se allUploads è un array
         if (!Array.isArray(allUploads)) {
             console.error('allUploads non è un array:', allUploads);
             return;
@@ -26,7 +25,7 @@ async function uploadPendingVideos() {
             formData.append('carNumber', upload.carNumber);
 
             try {
-                const response = await fetch('/upload', {
+                const response = await fetch('/upload-libreria', {
                     method: 'POST',
                     body: formData
                 });
@@ -36,7 +35,6 @@ async function uploadPendingVideos() {
                     throw new Error(`Errore del server: ${errorText}`);
                 }
 
-                // Verifica che la risposta sia JSON
                 const contentType = response.headers.get('content-type');
                 if (contentType && contentType.indexOf('application/json') !== -1) {
                     const data = await response.json();
@@ -48,7 +46,6 @@ async function uploadPendingVideos() {
                     throw new Error(`Errore del server: ${errorText}`);
                 }
 
-                // Rimuovi il video dalla coda dei pending uploads
                 const deleteTransaction = db.transaction(['pendingUploads'], 'readwrite');
                 deleteTransaction.objectStore('pendingUploads').delete(upload.id);
                 await deleteTransaction.complete;

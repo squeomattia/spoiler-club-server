@@ -1,7 +1,6 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const { exec } = require('child_process');
 const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -80,51 +79,6 @@ const storageLibreria = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 const uploadLibreria = multer({ storage: storageLibreria });
-
-app.post('/upload', upload.single('video'), (req, res) => {
-    const name = req.body.name;
-    const carNumber = req.body.carNumber;
-    const tempPath = path.join(uploadsDir, req.file.filename);
-
-    let data = readData();
-
-    if (!data.carNumbers[carNumber]) {
-        data.carNumbers[carNumber] = {};
-    }
-
-    const userVideos = data.carNumbers[carNumber];
-    if (Object.keys(userVideos).length >= 2 && !userVideos[name]) {
-        fs.unlinkSync(tempPath);
-        return res.status(400).json({ error: `Il numero auto ${carNumber} ha già due nomi assegnati.` });
-    }
-
-    if (!userVideos[name]) {
-        userVideos[name] = 0;
-    }
-
-    userVideos[name] += 1;
-
-    const newFileName = `${carNumber}_${name}_${userVideos[name]}.mp4`;
-    const newPath = path.join(uploadsDir, newFileName);
-
-    const ffmpegCommand = `ffmpeg -fflags +genpts -i ${tempPath} -c:v libx264 -preset slow -crf 22 -c:a aac -b:a 128k ${newPath}`;
-    console.log(`Esecuzione comando FFmpeg: ${ffmpegCommand}`);
-    
-    exec(ffmpegCommand, (err, stdout, stderr) => {
-        fs.unlinkSync(tempPath);
-
-        if (err) {
-            console.error("Errore nella conversione del video:", err);
-            console.error("Dettagli FFmpeg stdout:", stdout);
-            console.error("Dettagli FFmpeg stderr:", stderr);
-            return res.status(500).json({ error: "Errore nella conversione del video." });
-        }
-
-        writeData(data);
-
-        res.json({ message: "Video caricato e convertito con successo!" });
-    });
-});
 
 app.post('/upload-libreria', uploadLibreria.single('video'), (req, res) => {
     const name = req.body.name;
