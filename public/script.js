@@ -8,14 +8,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     if (registerBtn) {
         registerBtn.addEventListener('click', () => {
-            saveFormData();
-            window.location.href = 'record.html';
+            if (validateForm()) {
+                saveFormData();
+                window.location.href = 'record.html';
+            }
         });
     }
 
     if (loadBtn) {
         loadBtn.addEventListener('click', () => {
-            fileInput.click();
+            if (validateForm()) {
+                fileInput.click();
+            }
         });
     }
 
@@ -175,6 +179,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
         });
     }
 });
+
+function validateForm() {
+    const name = document.getElementById('name').value;
+    const carNumber = document.getElementById('carNumber').value;
+    
+    if (!name || !carNumber) {
+        alert('Nome e Numero Auto sono obbligatori.');
+        return false;
+    }
+
+    if (isNaN(carNumber)) {
+        alert('Numero Auto deve essere un numero.');
+        return false;
+    }
+
+    return true;
+}
 
 function saveFormData() {
     const name = document.getElementById('name').value;

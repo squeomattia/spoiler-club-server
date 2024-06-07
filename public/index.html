@@ -9,15 +9,14 @@
 </head>
 <body>
     <div class="container">
-        <label for="name">Nome:</label>
-        <input type="text" id="name" placeholder="Inserisci il tuo nome">
-        <label for="carNumber">Numero Auto:</label>
-        <input type="text" id="carNumber" placeholder="Inserisci il numero dell'auto">
+        <input type="text" id="name" placeholder="Nome" required>
+        <div id="error" style="display: none;">Inserisci il tuo nome</div>
+        <input type="number" id="carNumber" placeholder="Numero Auto" required>
         <div id="error" style="display: none;">Inserisci il numero dell'auto</div>
 
         <button id="registerBtn" class="button">Registra</button>
         <button id="loadBtn" class="button">Sfoglia</button>
-        <input type="file" id="fileInput" style="display: none;">
+        <input type="file" id="fileInput" style="display: none;" accept="video/*">
 
         <div id="spinner" style="display: none;">
             <i class="fas fa-spinner fa-spin"></i>
