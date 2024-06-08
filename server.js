@@ -85,6 +85,8 @@ app.post('/upload-libreria', uploadLibreria.single('video'), (req, res) => {
     const carNumber = req.body.carNumber;
     const tempPath = path.join(uploadsLibreriaDir, req.file.filename);
 
+    console.log(`Upload ricevuto: ${req.file.filename}`);
+
     let data = readData();
 
     if (!data.carNumbers[carNumber]) {
@@ -94,6 +96,7 @@ app.post('/upload-libreria', uploadLibreria.single('video'), (req, res) => {
     const userVideos = data.carNumbers[carNumber];
     if (Object.keys(userVideos).length >= 2 && !userVideos[name]) {
         fs.unlinkSync(tempPath);
+        console.error(`Errore: Il numero auto ${carNumber} ha già due nomi assegnati.`);
         return res.status(400).json({ error: `Il numero auto ${carNumber} ha già due nomi assegnati.` });
     }
 
@@ -112,6 +115,7 @@ app.post('/upload-libreria', uploadLibreria.single('video'), (req, res) => {
             return res.status(500).json({ error: "Errore nel rinominare il file." });
         }
 
+        console.log(`File rinominato correttamente: ${newFileName}`);
         writeData(data);
 
         res.json({ message: "Video caricato con successo!" });

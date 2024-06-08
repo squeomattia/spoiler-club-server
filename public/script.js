@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     if (loadBtn) {
         loadBtn.addEventListener('click', () => {
             if (validateForm()) {
+                console.log('Form convalidato con successo.');
                 fileInput.click();
             }
         });
@@ -14,8 +15,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
         fileInput.addEventListener('change', function(event) {
             const files = event.target.files;
             if (!files.length) {
+                console.log('Nessun file selezionato.');
                 return;
             }
+
+            console.log(`Numero di file selezionati: ${files.length}`);
 
             saveFormData();
 
@@ -28,6 +32,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
+                console.log(`Caricamento del file: ${file.name}`);
                 const formData = new FormData();
                 formData.append('video', file, file.name);
                 formData.append('name', name);
@@ -42,15 +47,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     results.forEach(result => {
                         if (result.status === 200) {
                             const response = JSON.parse(result.responseText);
+                            console.log(`Successo nel caricamento del file: ${response.message}`);
                             alert(response.message);
                         } else {
                             const response = JSON.parse(result.responseText);
+                            console.error(`Errore nel caricamento del file: ${response.error}`);
                             alert(response.error);
                         }
                     });
                 })
                 .catch(error => {
                     spinner.style.display = 'none';
+                    console.error('Errore nel caricamento di uno o più video:', error);
                     alert('Errore nel caricamento di uno o più video.');
                 });
         });
@@ -62,11 +70,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
         
         if (!name || !carNumber) {
             alert('Nome e Numero Auto sono obbligatori.');
+            console.error('Validazione fallita: Nome e Numero Auto sono obbligatori.');
             return false;
         }
 
         if (isNaN(carNumber)) {
             alert('Numero Auto deve essere un numero.');
+            console.error('Validazione fallita: Numero Auto deve essere un numero.');
             return false;
         }
 
@@ -79,6 +89,7 @@ function saveFormData() {
     const carNumber = document.getElementById('carNumber').value;
     localStorage.setItem('name', name);
     localStorage.setItem('carNumber', carNumber);
+    console.log(`Dati salvati: Nome - ${name}, Numero Auto - ${carNumber}`);
 }
 
 function uploadVideo(formData) {
@@ -88,13 +99,16 @@ function uploadVideo(formData) {
 
         xhr.onload = function() {
             if (xhr.status === 200) {
+                console.log('Upload completato con successo.');
                 resolve(xhr);
             } else {
+                console.error(`Errore nell'upload: ${xhr.statusText}`);
                 reject(xhr);
             }
         };
 
         xhr.onerror = function() {
+            console.error('Errore di rete durante l\'upload.');
             reject(xhr);
         };
 

@@ -1,5 +1,6 @@
 self.addEventListener('sync', event => {
     if (event.tag === 'sync-videos') {
+        console.log('Sync event triggered: sync-videos');
         event.waitUntil(uploadPendingVideos());
     }
 });
@@ -17,6 +18,8 @@ async function uploadPendingVideos() {
             console.error('allUploads non è un array:', allUploads);
             return;
         }
+
+        console.log(`Numero di upload pendenti: ${allUploads.length}`);
 
         for (const upload of allUploads) {
             const formData = new FormData();
@@ -49,6 +52,7 @@ async function uploadPendingVideos() {
                 const deleteTransaction = db.transaction(['pendingUploads'], 'readwrite');
                 deleteTransaction.objectStore('pendingUploads').delete(upload.id);
                 await deleteTransaction.complete;
+                console.log(`Upload completato e rimosso dai pendenti: ${upload.fileName}`);
             } catch (error) {
                 console.error('Errore nel caricamento del video:', error);
                 return;
