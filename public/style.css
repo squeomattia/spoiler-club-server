@@ -148,12 +148,18 @@ input[type="number"] {
     color: white;
 }
 
-#fleeLogo {
+#logoContainer {
     position: fixed;
     bottom: 20px;
     left: 20px;
+    display: flex;
+    align-items: center;
+}
+
+#fleeLogo, #spoilerLogo {
     width: 50px;
     height: 50px;
+    margin-right: 10px; /* Aggiungi spazio tra i loghi */
 }
 
 /* Layout per dispositivi mobili */
@@ -172,7 +178,7 @@ input[type="number"] {
         font-size: 1.2em; /* Dimensione delle icone ridotta per dispositivi mobili */
     }
 
-    #fleeLogo {
+    #logoContainer {
         bottom: 10px; /* Diminuisce il margine inferiore per i dispositivi mobili */
         left: 10px; /* Diminuisce il margine sinistro per i dispositivi mobili */
     }
