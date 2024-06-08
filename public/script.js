@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     if (fileInput) {
         fileInput.addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (!file) {
+            const files = event.target.files;
+            if (!files.length) {
                 return;
             }
 
@@ -21,34 +21,38 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
             const name = localStorage.getItem('name');
             const carNumber = localStorage.getItem('carNumber');
-            const formData = new FormData();
-            formData.append('video', file, file.name);
-            formData.append('name', name);
-            formData.append('carNumber', carNumber);
-
             const spinner = document.getElementById('spinner');
             spinner.style.display = 'block';
 
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', '/upload-libreria', true);
+            let uploadPromises = [];
 
-            xhr.onload = function() {
-                spinner.style.display = 'none';
-                if (xhr.status === 200) {
-                    const response = JSON.parse(xhr.responseText);
-                    alert(response.message);
-                } else {
-                    const response = JSON.parse(xhr.responseText);
-                    alert(response.error);
-                }
-            };
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const formData = new FormData();
+                formData.append('video', file, file.name);
+                formData.append('name', name);
+                formData.append('carNumber', carNumber);
 
-            xhr.onerror = function() {
-                spinner.style.display = 'none';
-                alert('Errore nel caricamento del video.');
-            };
+                uploadPromises.push(uploadVideo(formData));
+            }
 
-            xhr.send(formData);
+            Promise.all(uploadPromises)
+                .then(results => {
+                    spinner.style.display = 'none';
+                    results.forEach(result => {
+                        if (result.status === 200) {
+                            const response = JSON.parse(result.responseText);
+                            alert(response.message);
+                        } else {
+                            const response = JSON.parse(result.responseText);
+                            alert(response.error);
+                        }
+                    });
+                })
+                .catch(error => {
+                    spinner.style.display = 'none';
+                    alert('Errore nel caricamento di uno o più video.');
+                });
         });
     }
 
@@ -75,4 +79,25 @@ function saveFormData() {
     const carNumber = document.getElementById('carNumber').value;
     localStorage.setItem('name', name);
     localStorage.setItem('carNumber', carNumber);
+}
+
+function uploadVideo(formData) {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/upload-libreria', true);
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                resolve(xhr);
+            } else {
+                reject(xhr);
+            }
+        };
+
+        xhr.onerror = function() {
+            reject(xhr);
+        };
+
+        xhr.send(formData);
+    });
 }
