@@ -9,6 +9,12 @@ body {
     position: relative;
 }
 
+.logo-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
 .container {
     position: absolute;
     top: 50%;
