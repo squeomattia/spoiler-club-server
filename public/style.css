@@ -150,7 +150,7 @@ input[type="number"] {
 
 #logoContainerLeft {
     position: fixed;
-    bottom: 20px;
+    bottom: 40px; /* Aggiungi spazio per il footer */
     left: 20px;
     display: flex;
     align-items: center;
@@ -158,7 +158,7 @@ input[type="number"] {
 
 #logoContainerRight {
     position: fixed;
-    bottom: 20px;
+    bottom: 40px; /* Aggiungi spazio per il footer */
     right: 20px;
     display: flex;
     align-items: center;
@@ -168,6 +168,18 @@ input[type="number"] {
     width: 50px;
     height: 50px;
     margin-right: 10px; /* Aggiungi spazio tra i loghi */
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 5px 0;
+    font-size: 0.9em;
+    z-index: 1; /* Assicura che il footer sia sopra gli altri elementi */
 }
 
 /* Layout per dispositivi mobili */
@@ -187,12 +199,17 @@ input[type="number"] {
     }
 
     #logoContainerLeft {
-        bottom: 10px; /* Diminuisce il margine inferiore per i dispositivi mobili */
+        bottom: 30px; /* Diminuisce il margine inferiore per i dispositivi mobili */
         left: 10px; /* Diminuisce il margine sinistro per i dispositivi mobili */
     }
 
     #logoContainerRight {
-        bottom: 10px; /* Diminuisce il margine inferiore per i dispositivi mobili */
+        bottom: 30px; /* Diminuisce il margine inferiore per i dispositivi mobili */
         right: 10px; /* Diminuisce il margine destro per i dispositivi mobili */
+    }
+
+    footer {
+        padding: 3px 0;
+        font-size: 0.8em;
     }
 }
