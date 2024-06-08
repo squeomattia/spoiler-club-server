@@ -38,7 +38,12 @@ app.post('/check', (req, res) => {
 
 const uploadsDir = path.join(__dirname, 'uploads');
 const uploadsLibreriaDir = path.join(__dirname, 'uploads_libreria');
+const tempUploadsDir = path.join(__dirname, 'temp_uploads');
 const dataFilePath = path.join(__dirname, 'data.json');
+
+if (!fs.existsSync(tempUploadsDir)) {
+    fs.mkdirSync(tempUploadsDir);
+}
 
 // Funzione per leggere i dati dal file JSON
 function readData() {
@@ -69,16 +74,41 @@ const storage = multer.diskStorage({
 
 const storageLibreria = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, uploadsLibreriaDir);
+        cb(null, tempUploadsDir);
     },
     filename: function(req, file, cb) {
-        const fileName = file.originalname;
-        cb(null, fileName);
+        cb(null, `${file.originalname}-chunk-${req.body.chunkIndex}`);
     }
 });
 
 const upload = multer({ storage: storage });
 const uploadLibreria = multer({ storage: storageLibreria });
+
+app.post('/upload-chunk', uploadLibreria.single('video'), (req, res) => {
+    const chunkIndex = parseInt(req.body.chunkIndex, 10);
+    const totalChunks = parseInt(req.body.totalChunks, 10);
+    const fileName = req.file.originalname;
+    const tempPath = req.file.path;
+
+    console.log(`Ricevuto chunk ${chunkIndex + 1} di ${totalChunks} per il file ${fileName}`);
+
+    if (chunkIndex === totalChunks - 1) {
+        const finalFilePath = path.join(uploadsLibreriaDir, fileName);
+        const writeStream = fs.createWriteStream(finalFilePath);
+        for (let i = 0; i < totalChunks; i++) {
+            const chunkPath = path.join(tempUploadsDir, `${fileName}-chunk-${i}`);
+            const data = fs.readFileSync(chunkPath);
+            writeStream.write(data);
+            fs.unlinkSync(chunkPath); // rimuovi il chunk dopo averlo scritto
+        }
+        writeStream.end(() => {
+            console.log(`File ${fileName} ricostruito e salvato in ${finalFilePath}`);
+            res.json({ message: 'Video caricato con successo!' });
+        });
+    } else {
+        res.json({ message: `Chunk ${chunkIndex + 1} di ${totalChunks} caricato con successo.` });
+    }
+});
 
 app.post('/upload-libreria', uploadLibreria.single('video'), (req, res) => {
     const name = req.body.name;
