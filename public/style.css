@@ -78,6 +78,9 @@ input[type="number"] {
 #loadBtn {
     background-color: #d3d3d3;
     color: black;
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    font-style: normal;
 }
 
 #loadBtn:hover {
