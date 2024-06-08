@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 app.post('/check', (req, res) => {
     const { name, carNumber } = req.body;
     if (!name || !carNumber) {
-        return res.status(400).json({ allowed: false, error: 'Nome e numero dell\'auto sono obbligatori.' });
+        return res.status(400).json({ allowed: false, error: 'Name and Car Number are required.' });
     }
 
     let data = readData();
@@ -30,7 +30,7 @@ app.post('/check', (req, res) => {
 
     const userVideos = data.carNumbers[carNumber];
     if (Object.keys(userVideos).length >= 2 && !userVideos[name]) {
-        return res.json({ allowed: false, error: `Il numero auto ${carNumber} ha già due nomi assegnati.` });
+        return res.json({ allowed: false, error: `Car Number ${carNumber} has already been linked to two Names.` });
     }
 
     return res.json({ allowed: true });
@@ -97,7 +97,7 @@ app.post('/upload-libreria', uploadLibreria.single('video'), (req, res) => {
     if (Object.keys(userVideos).length >= 2 && !userVideos[name]) {
         fs.unlinkSync(tempPath);
         console.error(`Errore: Il numero auto ${carNumber} ha già due nomi assegnati.`);
-        return res.status(400).json({ error: `Il numero auto ${carNumber} ha già due nomi assegnati.` });
+        return res.status(400).json({ error: `Car Number ${carNumber} has already been linked to two Names.` });
     }
 
     if (!userVideos[name]) {
@@ -118,7 +118,7 @@ app.post('/upload-libreria', uploadLibreria.single('video'), (req, res) => {
         console.log(`File rinominato correttamente: ${newFileName}`);
         writeData(data);
 
-        res.json({ message: "Video caricato con successo!" });
+        res.json({ message: "Video uploaded successfully!" });
     });
 });
 
