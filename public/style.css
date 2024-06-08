@@ -10,6 +10,12 @@ body {
     position: relative;
 }
 
+.ciack-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
 .logo-container {
     display: flex;
     justify-content: center;
