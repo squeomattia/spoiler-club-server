@@ -95,15 +95,15 @@ app.post('/upload-chunk', uploadLibreria.single('video'), (req, res) => {
     if (chunkIndex === totalChunks - 1) {
         const finalFilePath = path.join(uploadsLibreriaDir, fileName);
         const writeStream = fs.createWriteStream(finalFilePath);
-        
+
         writeStream.on('error', (err) => {
             console.error("Errore nello stream di scrittura:", err);
-            res.status(500).json({ error: "Errore nello stream di scrittura." });
+            return res.status(500).json({ error: "Errore nello stream di scrittura." });
         });
-        
+
         writeStream.on('finish', () => {
             console.log(`File ${fileName} ricostruito e salvato in ${finalFilePath}`);
-            res.json({ message: 'Video caricato con successo!' });
+            return res.json({ message: 'Video caricato con successo!' });
         });
 
         for (let i = 0; i < totalChunks; i++) {
@@ -114,14 +114,13 @@ app.post('/upload-chunk', uploadLibreria.single('video'), (req, res) => {
                 fs.unlinkSync(chunkPath); // rimuovi il chunk dopo averlo scritto
             } else {
                 console.error(`Errore: Il chunk ${i} non esiste.`);
-                res.status(500).json({ error: `Il chunk ${i} non esiste.` });
                 writeStream.end();
-                return;
+                return res.status(500).json({ error: `Il chunk ${i} non esiste.` });
             }
         }
         writeStream.end();
     } else {
-        res.json({ message: `Chunk ${chunkIndex + 1} di ${totalChunks} caricato con successo.` });
+        return res.json({ message: `Chunk ${chunkIndex + 1} di ${totalChunks} caricato con successo.` });
     }
 });
 
