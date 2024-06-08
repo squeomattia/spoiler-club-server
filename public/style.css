@@ -1,6 +1,7 @@
 /* Stili di base */
 body {
     font-family: 'Lato', sans-serif;
+    font-weight: 700;
     background: url('img/background.svg') no-repeat center center fixed;
     background-size: cover; /* Assicura che l'immagine di sfondo copra l'intera area */
     margin: 0;
