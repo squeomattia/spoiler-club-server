@@ -1,7 +1,8 @@
 /* Stili di base */
 body {
-    font-family: 'Lato', sans-serif;
+    font-family: "Lato", sans-serif;
     font-weight: 700;
+    font-style: normal;
     background: url('img/background.svg') no-repeat center center fixed;
     background-size: cover; /* Assicura che l'immagine di sfondo copra l'intera area */
     margin: 0;
@@ -9,12 +10,6 @@ body {
     height: 100vh;
     overflow: hidden;
     position: relative;
-}
-
-.lato-bold {
-    font-family: "Lato", sans-serif;
-    font-weight: 700;
-    font-style: normal;
 }
 
 .logo-container {
@@ -80,15 +75,6 @@ input[type="number"] {
     max-width: 300px;
 }
 
-#registerBtn {
-    background-color: red;
-    color: white;
-}
-
-#registerBtn:hover {
-    background-color: darkred;
-}
-
 #loadBtn {
     background-color: #d3d3d3;
     color: black;
@@ -121,26 +107,6 @@ input[type="number"] {
     border-radius: 4px;
 }
 
-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-}
-
-#controls {
-    position: absolute;
-    bottom: 40px; /* Aumenta il margine inferiore */
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
 .button-round {
     width: 60px;
     height: 60px;
@@ -164,10 +130,6 @@ video {
     border: none; /* Rimuove il bordino dalle icone */
     box-shadow: none; /* Rimuove eventuali ombre dalle icone */
     outline: none; /* Rimuove il bordo di focus dalle icone */
-}
-
-#stopBtn {
-    background-color: red;
 }
 
 #uploadBtn {
