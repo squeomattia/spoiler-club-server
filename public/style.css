@@ -148,7 +148,7 @@ input[type="number"] {
     color: white;
 }
 
-#logoContainer {
+#logoContainerLeft {
     position: fixed;
     bottom: 20px;
     left: 20px;
@@ -156,7 +156,15 @@ input[type="number"] {
     align-items: center;
 }
 
-#fleeLogo, #spoilerLogo {
+#logoContainerRight {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+}
+
+#fleeLogo, #spoilerLogo, #milleLogo {
     width: 50px;
     height: 50px;
     margin-right: 10px; /* Aggiungi spazio tra i loghi */
@@ -178,8 +186,13 @@ input[type="number"] {
         font-size: 1.2em; /* Dimensione delle icone ridotta per dispositivi mobili */
     }
 
-    #logoContainer {
+    #logoContainerLeft {
         bottom: 10px; /* Diminuisce il margine inferiore per i dispositivi mobili */
         left: 10px; /* Diminuisce il margine sinistro per i dispositivi mobili */
+    }
+
+    #logoContainerRight {
+        bottom: 10px; /* Diminuisce il margine inferiore per i dispositivi mobili */
+        right: 10px; /* Diminuisce il margine destro per i dispositivi mobili */
     }
 }
