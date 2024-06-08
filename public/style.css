@@ -199,12 +199,12 @@ footer {
     }
 
     #logoContainerLeft {
-        bottom: 30px; /* Diminuisce il margine inferiore per i dispositivi mobili */
+        bottom: 35px; /* Diminuisce il margine inferiore per i dispositivi mobili */
         left: 10px; /* Diminuisce il margine sinistro per i dispositivi mobili */
     }
 
     #logoContainerRight {
-        bottom: 30px; /* Diminuisce il margine inferiore per i dispositivi mobili */
+        bottom: 35px; /* Diminuisce il margine inferiore per i dispositivi mobili */
         right: 10px; /* Diminuisce il margine destro per i dispositivi mobili */
     }
 
