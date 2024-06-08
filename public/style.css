@@ -164,7 +164,7 @@ input[type="number"] {
     align-items: center;
 }
 
-#fleeLogo, #spoilerLogo, #milleLogo {
+#fleeLogo, #spoilerLogo, #milleLogo, #officialLogo {
     width: 50px;
     height: 50px;
     margin-right: 10px; /* Aggiungi spazio tra i loghi */
