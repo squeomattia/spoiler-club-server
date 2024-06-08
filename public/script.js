@@ -1,50 +1,3 @@
-function uploadVideoInChunks(file) {
-    const chunkSize = 5 * 1024 * 1024; // 5MB
-    const totalChunks = Math.ceil(file.size / chunkSize);
-    const uploadPromises = [];
-    
-    for (let i = 0; i < totalChunks; i++) {
-        const start = i * chunkSize;
-        const end = Math.min(file.size, start + chunkSize);
-        const chunk = file.slice(start, end);
-        
-        const formData = new FormData();
-        formData.append('video', chunk, file.name);
-        formData.append('chunkIndex', i);
-        formData.append('totalChunks', totalChunks);
-        formData.append('name', localStorage.getItem('name'));
-        formData.append('carNumber', localStorage.getItem('carNumber'));
-        
-        uploadPromises.push(uploadChunk(formData));
-    }
-    
-    return Promise.all(uploadPromises);
-}
-
-function uploadChunk(formData) {
-    return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', '/upload-chunk', true);
-
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                console.log(`Chunk upload completato con successo.`);
-                resolve(xhr);
-            } else {
-                console.error(`Errore nell'upload del chunk: ${xhr.statusText}`);
-                reject(xhr);
-            }
-        };
-
-        xhr.onerror = function() {
-            console.error('Errore di rete durante l\'upload del chunk.');
-            reject(xhr);
-        };
-
-        xhr.send(formData);
-    });
-}
-
 document.addEventListener('DOMContentLoaded', (event) => {
     const loadBtn = document.getElementById('loadBtn');
     const fileInput = document.getElementById('fileInput');
@@ -70,6 +23,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
             saveFormData();
 
+            const name = localStorage.getItem('name');
+            const carNumber = localStorage.getItem('carNumber');
             const spinner = document.getElementById('spinner');
             spinner.style.display = 'block';
 
@@ -78,30 +33,33 @@ document.addEventListener('DOMContentLoaded', (event) => {
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
                 console.log(`Caricamento del file: ${file.name}`);
-                uploadPromises.push(uploadVideoInChunks(file));
+                const formData = new FormData();
+                formData.append('video', file, file.name);
+                formData.append('name', name);
+                formData.append('carNumber', carNumber);
+
+                uploadPromises.push(uploadVideo(formData));
             }
 
             Promise.all(uploadPromises)
                 .then(results => {
                     spinner.style.display = 'none';
                     results.forEach(result => {
-                        result.forEach(xhr => {
-                            if (xhr.status === 200) {
-                                const response = JSON.parse(xhr.responseText);
-                                console.log(`Successo nel caricamento del chunk: ${response.message}`);
-                                alert(response.message);
-                            } else {
-                                const response = JSON.parse(xhr.responseText);
-                                console.error(`Errore nel caricamento del chunk: ${response.error}`);
-                                alert(response.error);
-                            }
-                        });
+                        if (result.status === 200) {
+                            const response = JSON.parse(result.responseText);
+                            console.log(`Successo nel caricamento del file: ${response.message}`);
+                            alert(response.message);
+                        } else {
+                            const response = JSON.parse(result.responseText);
+                            console.error(`Errore nel caricamento del file: ${response.error}`);
+                            alert(response.error);
+                        }
                     });
                 })
                 .catch(error => {
                     spinner.style.display = 'none';
-                    console.error('Errore nel caricamento di uno o più chunk:', error);
-                    alert('Errore nel caricamento di uno o più chunk.');
+                    console.error('Errore nel caricamento di uno o più video:', error);
+                    alert('Errore nel caricamento di uno o più video.');
                 });
         });
     }
@@ -132,4 +90,28 @@ function saveFormData() {
     localStorage.setItem('name', name);
     localStorage.setItem('carNumber', carNumber);
     console.log(`Dati salvati: Nome - ${name}, Numero Auto - ${carNumber}`);
+}
+
+function uploadVideo(formData) {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/upload-libreria', true);
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                console.log('Upload completato con successo.');
+                resolve(xhr);
+            } else {
+                console.error(`Errore nell'upload: ${xhr.statusText}`);
+                reject(xhr);
+            }
+        };
+
+        xhr.onerror = function() {
+            console.error('Errore di rete durante l\'upload.');
+            reject(xhr);
+        };
+
+        xhr.send(formData);
+    });
 }

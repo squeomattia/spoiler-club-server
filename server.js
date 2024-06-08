@@ -38,12 +38,7 @@ app.post('/check', (req, res) => {
 
 const uploadsDir = path.join(__dirname, 'uploads');
 const uploadsLibreriaDir = path.join(__dirname, 'uploads_libreria');
-const tempUploadsDir = path.join(__dirname, 'temp_uploads');
 const dataFilePath = path.join(__dirname, 'data.json');
-
-if (!fs.existsSync(tempUploadsDir)) {
-    fs.mkdirSync(tempUploadsDir);
-}
 
 // Funzione per leggere i dati dal file JSON
 function readData() {
@@ -74,55 +69,16 @@ const storage = multer.diskStorage({
 
 const storageLibreria = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, tempUploadsDir);
+        cb(null, uploadsLibreriaDir);
     },
     filename: function(req, file, cb) {
-        cb(null, `${file.originalname}-chunk-${req.body.chunkIndex}`);
+        const fileName = file.originalname;
+        cb(null, fileName);
     }
 });
 
 const upload = multer({ storage: storage });
 const uploadLibreria = multer({ storage: storageLibreria });
-
-app.post('/upload-chunk', uploadLibreria.single('video'), (req, res) => {
-    const chunkIndex = parseInt(req.body.chunkIndex, 10);
-    const totalChunks = parseInt(req.body.totalChunks, 10);
-    const fileName = req.file.originalname;
-    const tempPath = req.file.path;
-
-    console.log(`Ricevuto chunk ${chunkIndex + 1} di ${totalChunks} per il file ${fileName}`);
-
-    if (chunkIndex === totalChunks - 1) {
-        const finalFilePath = path.join(uploadsLibreriaDir, fileName);
-        const writeStream = fs.createWriteStream(finalFilePath);
-
-        writeStream.on('error', (err) => {
-            console.error("Errore nello stream di scrittura:", err);
-            res.status(500).json({ error: "Errore nello stream di scrittura." });
-        });
-
-        writeStream.on('finish', () => {
-            console.log(`File ${fileName} ricostruito e salvato in ${finalFilePath}`);
-            res.json({ message: 'Video caricato con successo!' });
-        });
-
-        for (let i = 0; i < totalChunks; i++) {
-            const chunkPath = path.join(tempUploadsDir, `${fileName}-chunk-${i}`);
-            if (fs.existsSync(chunkPath)) {
-                const data = fs.readFileSync(chunkPath);
-                writeStream.write(data);
-                fs.unlinkSync(chunkPath); // rimuovi il chunk dopo averlo scritto
-            } else {
-                console.error(`Errore: Il chunk ${i} non esiste.`);
-                writeStream.end();
-                return res.status(500).json({ error: `Il chunk ${i} non esiste.` });
-            }
-        }
-        writeStream.end();
-    } else {
-        res.json({ message: `Chunk ${chunkIndex + 1} di ${totalChunks} caricato con successo.` });
-    }
-});
 
 app.post('/upload-libreria', uploadLibreria.single('video'), (req, res) => {
     const name = req.body.name;
