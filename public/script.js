@@ -69,13 +69,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const carNumber = document.getElementById('carNumber').value;
         
         if (!name || !carNumber) {
-            alert('Nome e Numero Auto sono obbligatori.');
+            alert('Name and Car Number are required.');
             console.error('Validazione fallita: Nome e Numero Auto sono obbligatori.');
             return false;
         }
 
         if (isNaN(carNumber)) {
-            alert('Numero Auto deve essere un numero.');
+            alert('Car Number must be a number.');
             console.error('Validazione fallita: Numero Auto deve essere un numero.');
             return false;
         }
