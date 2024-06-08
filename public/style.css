@@ -152,7 +152,7 @@ input[type="number"] {
 #fleeLogo {
     position: absolute;
     bottom: 20px;
-    right: 20px;
+    left: 20px;
     width: 50px;
     height: 50px;
 }
@@ -170,5 +170,10 @@ input[type="number"] {
 
     .button-round i {
         font-size: 1.2em; /* Dimensione delle icone ridotta per dispositivi mobili */
+    }
+
+    #fleeLogo {
+        bottom: 10px; /* Diminuisce il margine inferiore per i dispositivi mobili */
+        left: 10px; /* Diminuisce il margine sinistro per i dispositivi mobili */
     }
 }
