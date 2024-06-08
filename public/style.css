@@ -4,7 +4,7 @@ body {
     background-color: #000; /* Sfondo nero */
     margin: 0;
     padding: 0;
-    height: 80vh;
+    height: 90vh;
     overflow: hidden;
     position: relative;
 }
@@ -24,7 +24,7 @@ body {
 }
 
 .logo {
-    max-width: 90%;
+    max-width: 300px;
     margin-bottom: 20px;
 }
 
