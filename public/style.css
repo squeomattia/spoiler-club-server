@@ -199,17 +199,17 @@ footer {
     }
 
     #logoContainerLeft {
-        bottom: 45px; /* Diminuisce il margine inferiore per i dispositivi mobili */
+        bottom: 30px; /* Diminuisce il margine inferiore per i dispositivi mobili */
         left: 10px; /* Diminuisce il margine sinistro per i dispositivi mobili */
     }
 
     #logoContainerRight {
-        bottom: 45px; /* Diminuisce il margine inferiore per i dispositivi mobili */
+        bottom: 30px; /* Diminuisce il margine inferiore per i dispositivi mobili */
         right: 10px; /* Diminuisce il margine destro per i dispositivi mobili */
     }
 
     footer {
-        padding: 10px 0;
+        padding: 5px 0;
         font-size: 0.8em;
     }
 }
