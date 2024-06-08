@@ -11,6 +11,12 @@ body {
     position: relative;
 }
 
+.lato-bold {
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
 .logo-container {
     display: flex;
     justify-content: center;
