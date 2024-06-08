@@ -98,12 +98,12 @@ app.post('/upload-chunk', uploadLibreria.single('video'), (req, res) => {
 
         writeStream.on('error', (err) => {
             console.error("Errore nello stream di scrittura:", err);
-            return res.status(500).json({ error: "Errore nello stream di scrittura." });
+            res.status(500).json({ error: "Errore nello stream di scrittura." });
         });
 
         writeStream.on('finish', () => {
             console.log(`File ${fileName} ricostruito e salvato in ${finalFilePath}`);
-            return res.json({ message: 'Video caricato con successo!' });
+            res.json({ message: 'Video caricato con successo!' });
         });
 
         for (let i = 0; i < totalChunks; i++) {
@@ -120,7 +120,7 @@ app.post('/upload-chunk', uploadLibreria.single('video'), (req, res) => {
         }
         writeStream.end();
     } else {
-        return res.json({ message: `Chunk ${chunkIndex + 1} di ${totalChunks} caricato con successo.` });
+        res.json({ message: `Chunk ${chunkIndex + 1} di ${totalChunks} caricato con successo.` });
     }
 });
 
